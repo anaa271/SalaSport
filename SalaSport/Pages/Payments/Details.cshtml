@@ -1,0 +1,55 @@
+﻿@page
+@model SalaSport.Pages.Payments.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Payment</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Payment.Member)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Payment.Member.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Payment.Amount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Payment.Amount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Payment.PaidAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Payment.PaidAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Payment.ForType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Payment.ForType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Payment.Appointment)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Payment.Appointment.AppointmentId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Payment.MemberSubscription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Payment.MemberSubscription.MemberSubscriptionId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Payment.PaymentId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

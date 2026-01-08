@@ -1,0 +1,48 @@
+﻿@page
+@model SalaSport.Pages.Trainers.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Trainers</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainer[0].FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainer[0].Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainer[0].UserId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Trainer) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.TrainerId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.TrainerId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.TrainerId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,66 @@
+﻿@page
+@model SalaSport.Pages.Payments.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Payment[0].Member)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payment[0].Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payment[0].PaidAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payment[0].ForType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payment[0].Appointment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payment[0].MemberSubscription)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Payment) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaidAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ForType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Appointment.AppointmentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MemberSubscription.MemberSubscriptionId)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.PaymentId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.PaymentId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.PaymentId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
