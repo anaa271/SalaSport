@@ -4,19 +4,22 @@
              x:Class="SalaSportMAUI.Views.TrainersPage"
              Title="TrainersPage">
     <VerticalStackLayout Padding="20" Spacing="15">
-        <Label
-            Text="Trainers"
-            FontSize="22"
-            HorizontalOptions="Center" />
 
-        <CollectionView>
+        <Label
+        Text="Trainers"
+        FontSize="22"
+        HorizontalOptions="Center" />
+
+        <CollectionView ItemsSource="{Binding Trainers}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="10" Margin="5">
-                        <Label Text="Trainer Name" />
+                        <Label Text="{Binding FullName}" />
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
     </VerticalStackLayout>
+
 </ContentPage>

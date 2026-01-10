@@ -1,15 +1,31 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SalaSportMAUI.Views.AppointmentsPage"
-             Title="AppointmentsPage">
+<ContentPage
+    x:Class="SalaSportMAUI.Views.AppointmentsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Appointments">
 
     <VerticalStackLayout Padding="20" Spacing="15">
+
         <Label
             Text="My Appointments"
             FontSize="22"
             HorizontalOptions="Center" />
 
+        <CollectionView ItemsSource="{Binding Appointments}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Date}" />
+                            <Label Text="{Binding TrainerName}" />
+                            <Label Text="{Binding Status}" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
         <Button Text="Add Appointment" />
+
     </VerticalStackLayout>
 </ContentPage>

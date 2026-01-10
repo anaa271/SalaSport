@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SalaSportMAUI.Views.SubscriptionPage"
-             Title="SubscriptionPage">
+<ContentPage
+    x:Class="SalaSportMAUI.Views.SubscriptionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Subscriptions">
+
     <VerticalStackLayout Padding="20" Spacing="15">
+
         <Label
-            Text="My Subscription"
+            Text="My Subscriptions"
             FontSize="22"
             HorizontalOptions="Center" />
 
-        <Label Text="Monthly subscription" />
-        <Label Text="Valid until: -" />
+        <CollectionView ItemsSource="{Binding Subscriptions}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Type}" />
+                            <Label Text="{Binding StartDate}" />
+                            <Label Text="{Binding EndDate}" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
     </VerticalStackLayout>
+
 </ContentPage>
