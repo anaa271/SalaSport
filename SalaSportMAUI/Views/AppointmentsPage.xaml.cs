@@ -1,34 +1,36 @@
 using SalaSportMAUI.Models;
+using SalaSportMAUI.Services;
 using System.Collections.ObjectModel;
 
 namespace SalaSportMAUI.Views;
 
 public partial class AppointmentsPage : ContentPage
 {
+    private readonly AppointmentsService _service;
+
     public ObservableCollection<AppointmentModel> Appointments { get; set; }
 
     public AppointmentsPage()
     {
         InitializeComponent();
 
-        Appointments = new ObservableCollection<AppointmentModel>
-        {
-            new AppointmentModel
-            {
-                AppointmentId = 1,
-                Date = DateTime.Today,
-                TrainerName = "Ion Popescu",
-                Status = "Confirmed"
-            },
-            new AppointmentModel
-            {
-                AppointmentId = 2,
-                Date = DateTime.Today.AddDays(1),
-                TrainerName = "Maria Ionescu",
-                Status = "Pending"
-            }
-        };
+        _service = new AppointmentsService();
+        Appointments = new ObservableCollection<AppointmentModel>();
 
         BindingContext = this;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        Appointments.Clear();
+
+        var appointments = await _service.GetAppointmentsAsync();
+
+        foreach (var appointment in appointments)
+        {
+            Appointments.Add(appointment);
+        }
     }
 }

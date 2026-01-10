@@ -3,6 +3,8 @@
     x:Class="SalaSportMAUI.Views.SubscriptionPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:beh="clr-namespace:SalaSportMAUI.Behaviours"
+
     Title="Subscriptions">
 
     <VerticalStackLayout Padding="20" Spacing="15">
@@ -25,6 +27,12 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        <Entry
+    Placeholder="Subscription type">
+            <Entry.Behaviors>
+                <beh:ValidationBehaviour />
+            </Entry.Behaviors>
+        </Entry>
 
     </VerticalStackLayout>
 

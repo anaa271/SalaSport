@@ -2,6 +2,7 @@
     x:Class="SalaSportMAUI.Views.AppointmentsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:beh="clr-namespace:SalaSportMAUI.Behaviours"
     Title="Appointments">
 
     <VerticalStackLayout Padding="20" Spacing="15">
@@ -14,18 +15,40 @@
         <CollectionView ItemsSource="{Binding Appointments}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" Margin="5">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Date}" />
-                            <Label Text="{Binding TrainerName}" />
-                            <Label Text="{Binding Status}" />
+                    <Frame Margin="10" Padding="10" BackgroundColor="#1E1E1E">
+                        <VerticalStackLayout Spacing="4">
+
+                            <Label
+                        Text="{Binding AppointmentId, StringFormat='Appointment #{0}'}"
+                        FontAttributes="Bold"
+                        TextColor="White" />
+
+                            <Label
+                        Text="{Binding StartTime, StringFormat='Start: {0:dd.MM.yyyy HH:mm}'}"
+                        TextColor="LightGray" />
+
+                            <Label
+                        Text="{Binding EndTime, StringFormat='End: {0:dd.MM.yyyy HH:mm}'}"
+                        TextColor="LightGray" />
+
+                            <Label
+                        Text="{Binding Status, StringFormat='Status: {0}'}"
+                        TextColor="LightGray" />
+
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+
         <Button Text="Add Appointment" />
+
+        <Entry Placeholder="Enter status">
+            <Entry.Behaviors>
+                <beh:ValidationBehaviour />
+            </Entry.Behaviors>
+        </Entry>
 
     </VerticalStackLayout>
 </ContentPage>
