@@ -29,11 +29,15 @@ public class AppointmentsService
             ?? new List<AppointmentModel>();
     }
 
-    public async Task AddAppointmentAsync(AppointmentModel appointment)
+    public async Task<AppointmentModel?> AddAppointmentAsync(AppointmentModel appointment)
     {
         var response = await _httpClient.PostAsJsonAsync("api/appointments", appointment);
         response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<AppointmentModel>();
     }
+
+
 
     public async Task UpdateAppointmentAsync(AppointmentModel appointment)
     {

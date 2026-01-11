@@ -8,22 +8,18 @@ public partial class AppointmentsPage : ContentPage
 {
     private readonly AppointmentsService _appointmentsService;
 
-    public ObservableCollection<AppointmentModel> Appointments { get; set; }
+    public ObservableCollection<AppointmentModel> Appointments { get; } = new();
 
     public AppointmentsPage()
     {
         InitializeComponent();
 
         _appointmentsService = new AppointmentsService();
-        Appointments = new ObservableCollection<AppointmentModel>();
         BindingContext = this;
 
-        // Defaults for pickers
         StartDatePicker.Date = DateTime.Today;
         StartTimePicker.Time = DateTime.Now.TimeOfDay;
-
-        // Duration default = 60 (index 1 in [30,60,90,120])
-        DurationPicker.SelectedIndex = 1;
+        DurationPicker.SelectedIndex = 1; // 60
     }
 
     protected override async void OnAppearing()
@@ -44,8 +40,11 @@ public partial class AppointmentsPage : ContentPage
         var appointments = await _appointmentsService.GetAppointmentsForMemberAsync(memberId);
 
         Appointments.Clear();
-        foreach (var a in appointments)
+        foreach (var a in appointments.OrderBy(x => x.StartTime))
+        {
             Appointments.Add(a);
+            NotificationService.ScheduleAppointmentReminder(a);
+        }
     }
 
     private async void OnAddAppointmentClicked(object sender, EventArgs e)
@@ -56,12 +55,8 @@ public partial class AppointmentsPage : ContentPage
             return;
         }
 
-        // Build start datetime from date + time pickers
-        var date = StartDatePicker.Date;
-        var time = StartTimePicker.Time;
-        var start = date.Add(time);
+        var start = StartDatePicker.Date.Add(StartTimePicker.Time);
 
-        // Duration minutes (default 60)
         var minutes = 60;
         if (DurationPicker.SelectedItem is string s && int.TryParse(s, out var parsed))
             minutes = parsed;
@@ -74,7 +69,7 @@ public partial class AppointmentsPage : ContentPage
             return;
         }
 
-        var appointment = new AppointmentModel
+        var newAppointment = new AppointmentModel
         {
             MemberId = CurrentMember.MemberId,
             TrainerId = trainerId,
@@ -84,7 +79,9 @@ public partial class AppointmentsPage : ContentPage
             Notes = NotesEntry.Text
         };
 
-        await _appointmentsService.AddAppointmentAsync(appointment);
+        var created = await _appointmentsService.AddAppointmentAsync(newAppointment);
+        if (created != null)
+            NotificationService.ScheduleAppointmentReminder(created);
 
         TrainerIdEntry.Text = "";
         NotesEntry.Text = "";
@@ -106,7 +103,9 @@ public partial class AppointmentsPage : ContentPage
             var ok = await DisplayAlert("Delete", "Delete this appointment?", "Yes", "No");
             if (!ok) return;
 
+            NotificationService.CancelAppointmentReminder(selected.AppointmentId);
             await _appointmentsService.DeleteAppointmentAsync(selected.AppointmentId);
+
             await LoadAppointmentsForMember(CurrentMember.MemberId);
             return;
         }
@@ -118,6 +117,7 @@ public partial class AppointmentsPage : ContentPage
 
             selected.Notes = newNotes;
             await _appointmentsService.UpdateAppointmentAsync(selected);
+
             await LoadAppointmentsForMember(CurrentMember.MemberId);
         }
     }
