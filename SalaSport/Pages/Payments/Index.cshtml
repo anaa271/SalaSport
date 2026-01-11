@@ -1,69 +1,54 @@
 ﻿@page
 @model SalaSport.Pages.Payments.IndexModel
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Payments";
 }
 
-<h1>Index</h1>
+<h1>Payments</h1>
 
 <p>
-    @if (User.IsInRole("Admin"))
-    {
-        <a asp-page="Create">Create New</a>
-    }
+    <a class="btn btn-primary" asp-page="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Payment[0].Member)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Payment[0].Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Payment[0].PaidAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Payment[0].ForType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Payment[0].Appointment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Payment[0].MemberSubscription)
-            </th>
+            <th>Member</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>PaidAt</th>
+            <th>Reference</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Payment) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Member.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaidAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ForType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Appointment.AppointmentId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MemberSubscription.MemberSubscriptionId)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.PaymentId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.PaymentId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.PaymentId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var p in Model.Payments)
+        {
+            <tr>
+                <td>@(p.Member?.FullName ?? p.MemberId.ToString())</td>
+                <td>@p.ForType</td>
+                <td>@p.Amount</td>
+                <td>@p.PaidAt.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>
+                    @if (p.AppointmentId != null)
+                    {
+                        <span>Appointment #@p.AppointmentId</span>
+                    }
+                    else if (p.MemberSubscriptionId != null)
+                    {
+                        <span>Subscription: @p.MemberSubscription?.Subscription?.Name</span>
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@p.PaymentId">Details</a> |
+                    <a asp-page="./Edit" asp-route-id="@p.PaymentId">Edit</a> |
+                    <a asp-page="./Delete" asp-route-id="@p.PaymentId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -11,6 +11,9 @@
 <div>
     <h4>Trainer</h4>
     <hr />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Trainer.FullName)
@@ -18,12 +21,14 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Trainer.FullName)
         </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Trainer.Phone)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Trainer.Phone)
         </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Trainer.UserId)
         </dt>
@@ -31,7 +36,7 @@
             @Html.DisplayFor(model => model.Trainer.UserId)
         </dd>
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="Trainer.TrainerId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |

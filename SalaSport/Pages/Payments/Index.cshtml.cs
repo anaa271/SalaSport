@@ -1,32 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SalaSport.Data;
 using SalaSport.Models;
 
-namespace SalaSport.Pages.Payments
+namespace SalaSport.Pages.Payments;
+
+[Authorize(Policy = "AdminPolicy")]
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly SalaSportContext _context;
+
+    public IndexModel(SalaSportContext context)
     {
-        private readonly SalaSport.Data.SalaSportContext _context;
+        _context = context;
+    }
 
-        public IndexModel(SalaSport.Data.SalaSportContext context)
-        {
-            _context = context;
-        }
+    public IList<Payment> Payments { get; set; } = new List<Payment>();
 
-        public IList<Payment> Payment { get;set; } = default!;
-
-        public async Task OnGetAsync()
-        {
-            Payment = await _context.Payment
-                .Include(p => p.Appointment)
-                .Include(p => p.Member)
-                .Include(p => p.MemberSubscription).ToListAsync();
-        }
+    public async Task OnGetAsync()
+    {
+        Payments = await _context.Payment
+            .AsNoTracking()
+            .Include(p => p.Member)
+            .Include(p => p.Appointment)
+            .Include(p => p.MemberSubscription)
+                .ThenInclude(ms => ms.Subscription)
+            .OrderByDescending(p => p.PaidAt)
+            .ToListAsync();
     }
 }

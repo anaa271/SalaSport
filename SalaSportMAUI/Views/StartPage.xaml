@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SalaSportMAUI.Views.StartPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Select Member">
+
+    <VerticalStackLayout Padding="20" Spacing="12">
+
+        <Label Text="Enter member full name:" />
+
+        <Entry x:Name="FullNameEntry"
+               Placeholder="e.g. Pop Larisa" />
+
+        <Button Text="Continue"
+                Clicked="OnContinueClicked" />
+
+        <Label x:Name="ErrorLabel"
+               TextColor="Red"
+               IsVisible="False" />
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using SalaSport.Data;
@@ -12,9 +8,9 @@ namespace SalaSport.Pages.Trainers
 {
     public class DeleteModel : PageModel
     {
-        private readonly SalaSport.Data.SalaSportContext _context;
+        private readonly SalaSportContext _context;
 
-        public DeleteModel(SalaSport.Data.SalaSportContext context)
+        public DeleteModel(SalaSportContext context)
         {
             _context = context;
         }
@@ -24,40 +20,50 @@ namespace SalaSport.Pages.Trainers
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var trainer = await _context.Trainer.FirstOrDefaultAsync(m => m.TrainerId == id);
+            var trainer = await _context.Trainer
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.TrainerId == id);
 
-            if (trainer == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Trainer = trainer;
-            }
+            if (trainer == null) return NotFound();
+
+            Trainer = trainer;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var trainer = await _context.Trainer.FindAsync(id);
-            if (trainer != null)
+            if (trainer == null) return RedirectToPage("./Index");
+
+            // Nu ștergem dacă există programări legate de trainer
+            var hasAppointments = await _context.Appointment
+                .AnyAsync(a => a.TrainerId == trainer.TrainerId);
+
+            if (hasAppointments)
             {
                 Trainer = trainer;
-                _context.Trainer.Remove(Trainer);
-                await _context.SaveChangesAsync();
+                ModelState.AddModelError(string.Empty,
+                    "Cannot delete trainer because there are appointments assigned to them.");
+                return Page();
             }
 
-            return RedirectToPage("./Index");
+            try
+            {
+                _context.Trainer.Remove(trainer);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+            catch (DbUpdateException)
+            {
+                Trainer = trainer;
+                ModelState.AddModelError(string.Empty,
+                    "Delete failed due to related records in the database.");
+                return Page();
+            }
         }
     }
 }

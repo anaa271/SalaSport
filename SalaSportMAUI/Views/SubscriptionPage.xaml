@@ -3,37 +3,33 @@
     x:Class="SalaSportMAUI.Views.SubscriptionPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:beh="clr-namespace:SalaSportMAUI.Behaviours"
-
     Title="Subscriptions">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
+    <VerticalStackLayout Padding="20" Spacing="12">
 
-        <Label
-            Text="My Subscriptions"
-            FontSize="22"
-            HorizontalOptions="Center" />
+        <Label Text="Member subscriptions"
+               FontAttributes="Bold"
+               FontSize="20" />
 
         <CollectionView ItemsSource="{Binding Subscriptions}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" Margin="5">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Type}" />
-                            <Label Text="{Binding StartDate}" />
-                            <Label Text="{Binding EndDate}" />
+                    <Frame Padding="12" Margin="0,6" CornerRadius="12">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="{Binding Name}"
+                                   FontAttributes="Bold"
+                                   FontSize="16" />
+
+                            <Label Text="{Binding Price, StringFormat='Price: {0}'}" />
+                            <Label Text="{Binding StartDate, StringFormat='From: {0:dd.MM.yyyy}'}" />
+                            <Label Text="{Binding EndDate, StringFormat='To: {0:dd.MM.yyyy}'}" />
+
+                            <Label Text="{Binding IsActive, StringFormat='Active: {0}'}" />
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Entry
-    Placeholder="Subscription type">
-            <Entry.Behaviors>
-                <beh:ValidationBehaviour />
-            </Entry.Behaviors>
-        </Entry>
 
     </VerticalStackLayout>
-
 </ContentPage>

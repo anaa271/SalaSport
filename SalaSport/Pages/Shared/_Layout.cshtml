@@ -11,34 +11,79 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">SalaSport</a>
+        <nav class="navbar navbar-expand-lg navbar-light mb-3">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand fw-bold" asp-area="" asp-page="/Index">SalaSport</a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="mainNavbar">
+
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
+
+                        <!-- Visible for everyone -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="/Trainers/Index">Trainers</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-page="/Members/Index">Members</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="/Subscriptions/Index">Subscriptions</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-page="/Appointments/Index">Appointments</a>
-                        </li>
+
+                        @* When authenticated, show menu based on role *@
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            @* MEMBER (User) *@
+                            if (User.IsInRole("User"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/My/Appointments">My Appointments</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/My/Subscriptions">My Subscriptions</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/My/Payments">My Payments</a>
+                                </li>
+                            }
+
+                            @* ADMIN *@
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/Members/Index">Members</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/MemberSubscriptions/Index">Member Subscriptions</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/Appointments/Index">Appointments</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/Payments/Index">Payments</a>
+                                </li>
+                            }
+
+                            @* (Optional) Trainer role: decide ce vrei să vadă trainerul *@
+                            if (User.IsInRole("Trainer"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-page="/Appointments/Index">Appointments</a>
+                                </li>
+                            }
+                        }
                     </ul>
 
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav ms-auto">
                         <partial name="_LoginPartial" />
                     </ul>
+
                 </div>
             </div>
         </nav>

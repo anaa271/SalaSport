@@ -1,57 +1,70 @@
 ﻿@page
 @model SalaSport.Pages.Payments.CreateModel
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Payment";
 }
 
-<h1>Create</h1>
+<h1>Create Payment</h1>
 
-<h4>Payment</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <span class="text-danger">*</span>
-                <label asp-for="Payment.MemberId" class="control-label"></label>
-                <select asp-for="Payment.MemberId" class ="form-control" asp-items="ViewBag.MemberId" aria-required="true"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Payment.Amount" class="control-label"></label>
-                <input asp-for="Payment.Amount" class="form-control" />
-                <span asp-validation-for="Payment.Amount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Payment.PaidAt" class="control-label"></label>
-                <input asp-for="Payment.PaidAt" class="form-control" />
-                <span asp-validation-for="Payment.PaidAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Payment.ForType" class="control-label"></label>
-                <select asp-for="Payment.ForType" class="form-control" ></select>
-                <span asp-validation-for="Payment.ForType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Payment.AppointmentId" class="control-label"></label>
-                <select asp-for="Payment.AppointmentId" class ="form-control" asp-items="ViewBag.AppointmentId" ></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Payment.MemberSubscriptionId" class="control-label"></label>
-                <select asp-for="Payment.MemberSubscriptionId" class ="form-control" asp-items="ViewBag.MemberSubscriptionId" ></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="col-md-6">
+        <div class="card-soft">
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Payment.MemberId" class="form-label"></label>
+                    <select asp-for="Payment.MemberId" class="form-control" asp-items="Model.MemberOptions">
+                        <option value="">-- Select member --</option>
+                    </select>
+                    <span asp-validation-for="Payment.MemberId" class="text-danger"></span>
+                    <div class="form-text">After selecting a member, submit once if the lists below are empty (simple version).</div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Payment.ForType" class="form-label"></label>
+                    <select asp-for="Payment.ForType" class="form-control"
+                            asp-items="Html.GetEnumSelectList<SalaSport.Models.PaymentType>()"></select>
+                    <span asp-validation-for="Payment.ForType" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Payment.Amount" class="form-label"></label>
+                    <input asp-for="Payment.Amount" class="form-control" />
+                    <span asp-validation-for="Payment.Amount" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Payment.PaidAt" class="form-label"></label>
+                    <input asp-for="Payment.PaidAt" class="form-control" />
+                    <span asp-validation-for="Payment.PaidAt" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Payment.AppointmentId" class="form-label"></label>
+                    <select asp-for="Payment.AppointmentId" class="form-control" asp-items="Model.AppointmentOptions">
+                        <option value="">-- Select appointment (if type is Appointment) --</option>
+                    </select>
+                    <span asp-validation-for="Payment.AppointmentId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Payment.MemberSubscriptionId" class="form-label"></label>
+                    <select asp-for="Payment.MemberSubscriptionId" class="form-control" asp-items="Model.MemberSubscriptionOptions">
+                        <option value="">-- Select subscription (if type is Subscription) --</option>
+                    </select>
+                    <span asp-validation-for="Payment.MemberSubscriptionId" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a class="btn btn-link" asp-page="Index">Back</a>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -13,12 +13,15 @@
         <CollectionView ItemsSource="{Binding Trainers}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" Margin="5">
-                        <Label Text="{Binding FullName}" />
+                    <Frame Margin="10" Padding="10">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding FullName}" FontAttributes="Bold" />
+                        </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
 
     </VerticalStackLayout>
 

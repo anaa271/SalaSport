@@ -23,7 +23,10 @@ namespace SalaSport.Pages.Members
 
         public async Task OnGetAsync()
         {
-            Member = await _context.Member.ToListAsync();
+            Member = await _context.Member
+    .Where(m => m.Email != "admin1@salasport.local")
+    .ToListAsync();
+
         }
     }
 }

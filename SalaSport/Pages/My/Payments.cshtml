@@ -1,0 +1,53 @@
+﻿@page
+@model SalaSport.Pages.My.PaymentsModel
+@{
+    ViewData["Title"] = "My Payments";
+}
+
+<h1>My Payments</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="text-danger">@Model.ErrorMessage</div>
+}
+else if (Model.Payments.Count == 0)
+{
+    <p>No payments found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>PaidAt</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Reference</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Payments)
+            {
+                <tr>
+                    <td>@p.PaidAt.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@p.ForType</td>
+                    <td>@p.Amount</td>
+                    <td>
+                        @if (p.AppointmentId != null)
+                        {
+                            <span>Appointment #@p.AppointmentId</span>
+                        }
+                        else if (p.MemberSubscriptionId != null)
+                        {
+                            <span>@p.MemberSubscription?.Subscription?.Name</span>
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

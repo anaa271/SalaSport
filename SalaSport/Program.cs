@@ -27,15 +27,30 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizeFolder("/Appointments");
+    options.Conventions.AuthorizeFolder("/");
 
     options.Conventions.AllowAnonymousToPage("/Trainers/Index");
     options.Conventions.AllowAnonymousToPage("/Trainers/Details");
 
+    options.Conventions.AllowAnonymousToPage("/Subscriptions/Index");
+    options.Conventions.AllowAnonymousToPage("/Subscriptions/Details");
+
+    options.Conventions.AuthorizePage("/Trainers/Create", "AdminPolicy");
+    options.Conventions.AuthorizePage("/Trainers/Edit", "AdminPolicy");
+    options.Conventions.AuthorizePage("/Trainers/Delete", "AdminPolicy");
+
+    options.Conventions.AuthorizePage("/Subscriptions/Create", "AdminPolicy");
+    options.Conventions.AuthorizePage("/Subscriptions/Edit", "AdminPolicy");
+    options.Conventions.AuthorizePage("/Subscriptions/Delete", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/My");
+
     options.Conventions.AuthorizeFolder("/Members", "AdminPolicy");
-    options.Conventions.AuthorizeFolder("/Subscriptions", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/Appointments", "AdminPolicy");
+    options.Conventions.AuthorizeFolder("/MemberSubscriptions", "AdminPolicy");
 
 });
+
+
 
 var app = builder.Build();
 
